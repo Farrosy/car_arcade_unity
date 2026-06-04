@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class CubeController : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
@@ -9,6 +10,7 @@ public class CubeController : MonoBehaviour
     [SerializeField] private float _maxRotationX = 45f;
     public string Brand;
     private Transform myTransform;
+    private Rigidbody myRigidbody;
     public float RotationY;
     public float InputVertical, InputHorizontal, MouseY, MouseX;
 
@@ -28,14 +30,19 @@ public class CubeController : MonoBehaviour
     private void Inisialisasi()
     {
         myTransform = GetComponent<Transform>(); //mencri component pada game object yang sama
+        myRigidbody = GetComponent<Rigidbody>();
+
+        myRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+        myRigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        myRigidbody.constraints |= RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
+        currentRotationY = myTransform.eulerAngles.y;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // Debug.Log("Start");
         // Debug.Log($"Mobil brand {Brand} memiliki speed {_moveSpeed} ");
-        Move();
-        Rotate();
         Scale();
     }
     private void OnEnable()
@@ -51,8 +58,12 @@ public class CubeController : MonoBehaviour
     public void Move()
     {
         // Debug.Log($"Mobil brand {Brand} on start pada posisi {myTransform.position} ");
-        myTransform.position += (myTransform.forward * _moveSpeed * InputVertical * Time.deltaTime);
-        myTransform.position += (myTransform.right * _moveSpeed * InputHorizontal * Time.deltaTime);
+        Vector3 movement = (myTransform.forward * InputVertical) + (myTransform.right * InputHorizontal);
+        movement = Vector3.ClampMagnitude(movement, 1f);
+
+        Vector3 targetVelocity = movement * _moveSpeed;
+        targetVelocity.y = myRigidbody.linearVelocity.y;
+        myRigidbody.linearVelocity = targetVelocity;
 
         // Debug.Log($"Mobil brand {Brand} setelah bergerak ada pada posisi {myTransform.position} ");
     }
@@ -65,10 +76,11 @@ public class CubeController : MonoBehaviour
         currentRotationX -= MouseY* _rotationSensivity;
 
         currentRotationX = Mathf.Clamp(currentRotationX, _minRotationX, _maxRotationX);
-        
-        myTransform.localRotation = Quaternion.Euler(0f, currentRotationY, 0f);
 
-        MainCameraTransform.localRotation = Quaternion.Euler(currentRotationX, 0f, 0f);
+        if (MainCameraTransform != null)
+        {
+            MainCameraTransform.localRotation = Quaternion.Euler(currentRotationX, 0f, 0f);
+        }
         // Debug.Log($"Mobil brand {Brand} setelah bergerak pada rotasi {myTransform.rotation} ");
     }
 
@@ -84,7 +96,6 @@ public class CubeController : MonoBehaviour
     {
         // Debug.Log("Update");
         GetInput();
-        Move();
         Rotate();
         // Scale();
     }
@@ -100,7 +111,8 @@ public class CubeController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Debug.Log("FixedUpdate");
+        Move();
+        myRigidbody.MoveRotation(Quaternion.Euler(0f, currentRotationY, 0f));
     }
      private void OnDestroy()
      {
