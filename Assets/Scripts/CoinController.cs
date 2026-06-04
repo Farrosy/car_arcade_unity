@@ -12,12 +12,11 @@ public class CoinController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        NewMonoBehaviourScript player = other.GetComponent<NewMonoBehaviourScript>();
+        CubeController player = other.GetComponent<CubeController>();
 
         if (player != null)
         {
             player.AddPoint(_pointValue);
-
             Destroy(gameObject);
         }
     }

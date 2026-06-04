@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class CubeController : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _scale;
@@ -16,6 +16,9 @@ public class NewMonoBehaviourScript : MonoBehaviour
     private float currentRotationY;
 
     public Transform MainCameraTransform;
+    
+    [Header("Score System")]
+    public int TotalPoints = 0;
 
     private void Awake()
     {
