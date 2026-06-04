@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 97046227}
   - component: {fileID: 97046226}
   m_Layer: 0
-  m_Name: Cube (5)
+  m_Name: Wall_inside 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -296,7 +296,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 97046225}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c5d34a9885acd09488d5dcf26c6a20a6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 157070616}
   - component: {fileID: 157070615}
   m_Layer: 0
-  m_Name: Coin (6)
+  m_Name: Coin 8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 163330125}
   - component: {fileID: 163330124}
   m_Layer: 0
-  m_Name: Coin (7)
+  m_Name: Coin 9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -651,7 +651,7 @@ GameObject:
   - component: {fileID: 183048762}
   - component: {fileID: 183048761}
   m_Layer: 0
-  m_Name: GameObject (1)
+  m_Name: Object_Checkpoint
   m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -933,7 +933,7 @@ GameObject:
   - component: {fileID: 281343161}
   - component: {fileID: 281343160}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Wall_outside 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -946,7 +946,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281343159}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c5d34a9885acd09488d5dcf26c6a20a6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1046,7 +1046,7 @@ GameObject:
   - component: {fileID: 313873467}
   - component: {fileID: 313873466}
   m_Layer: 0
-  m_Name: Coin (5)
+  m_Name: Coin 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1289,7 +1289,7 @@ GameObject:
   - component: {fileID: 519120627}
   - component: {fileID: 519120626}
   m_Layer: 0
-  m_Name: Coin (1)
+  m_Name: Coin 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1415,7 +1415,7 @@ GameObject:
   - component: {fileID: 541444151}
   - component: {fileID: 541444150}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: TakeScreen
   m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1471,7 +1471,7 @@ GameObject:
   - component: {fileID: 569147358}
   - component: {fileID: 569147357}
   m_Layer: 0
-  m_Name: Plane (2)
+  m_Name: Track 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1699,7 +1699,7 @@ GameObject:
   - component: {fileID: 643672737}
   - component: {fileID: 643672736}
   m_Layer: 0
-  m_Name: Coin (2)
+  m_Name: Coin 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1830,7 +1830,7 @@ GameObject:
   - component: {fileID: 687088699}
   - component: {fileID: 687088700}
   m_Layer: 0
-  m_Name: CubeParrent
+  m_Name: CarParent
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1843,7 +1843,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 687088693}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c5d34a9885acd09488d5dcf26c6a20a6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2459,7 +2459,7 @@ GameObject:
   - component: {fileID: 840885141}
   - component: {fileID: 840885140}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Wall_inside 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2472,7 +2472,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 840885139}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c5d34a9885acd09488d5dcf26c6a20a6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2572,7 +2572,7 @@ GameObject:
   - component: {fileID: 984463908}
   - component: {fileID: 984463907}
   m_Layer: 0
-  m_Name: Coin (9)
+  m_Name: Coin 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2700,7 +2700,7 @@ GameObject:
   - component: {fileID: 1002140044}
   - component: {fileID: 1002140043}
   m_Layer: 0
-  m_Name: Cube (9)
+  m_Name: Wall_outside 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2713,7 +2713,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002140042}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c5d34a9885acd09488d5dcf26c6a20a6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2812,7 +2812,7 @@ GameObject:
   - component: {fileID: 1084724735}
   - component: {fileID: 1084724734}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: Wall_outside 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2825,7 +2825,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1084724733}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c5d34a9885acd09488d5dcf26c6a20a6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2925,7 +2925,7 @@ GameObject:
   - component: {fileID: 1246053062}
   - component: {fileID: 1246053061}
   m_Layer: 0
-  m_Name: Coin (3)
+  m_Name: Coin 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3053,7 +3053,7 @@ GameObject:
   - component: {fileID: 1331948054}
   - component: {fileID: 1331948053}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: Wall_outside 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3066,7 +3066,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1331948052}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c5d34a9885acd09488d5dcf26c6a20a6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3165,7 +3165,7 @@ GameObject:
   - component: {fileID: 1565663813}
   - component: {fileID: 1565663812}
   m_Layer: 0
-  m_Name: Cube (8)
+  m_Name: Wall_inside 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3178,7 +3178,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565663811}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c5d34a9885acd09488d5dcf26c6a20a6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3676,7 +3676,7 @@ GameObject:
   - component: {fileID: 1645320971}
   - component: {fileID: 1645320970}
   m_Layer: 0
-  m_Name: Plane (1)
+  m_Name: Track 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3917,7 +3917,7 @@ GameObject:
   - component: {fileID: 1688932875}
   - component: {fileID: 1688932874}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Track 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4107,7 +4107,7 @@ GameObject:
   - component: {fileID: 1863108920}
   - component: {fileID: 1863108919}
   m_Layer: 0
-  m_Name: Coin (8)
+  m_Name: Coin 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4235,7 +4235,7 @@ GameObject:
   - component: {fileID: 2034017400}
   - component: {fileID: 2034017399}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Wall_inside 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4248,7 +4248,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2034017398}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c5d34a9885acd09488d5dcf26c6a20a6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -4348,7 +4348,7 @@ GameObject:
   - component: {fileID: 2093681041}
   - component: {fileID: 2093681045}
   m_Layer: 0
-  m_Name: Coin
+  m_Name: Coin 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4476,7 +4476,7 @@ GameObject:
   - component: {fileID: 2115145643}
   - component: {fileID: 2115145642}
   m_Layer: 0
-  m_Name: Plane (3)
+  m_Name: Track 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4583,26 +4583,26 @@ SceneRoots:
   - {fileID: 825963466}
   - {fileID: 687088697}
   - {fileID: 1688932877}
-  - {fileID: 569147360}
   - {fileID: 1645320973}
+  - {fileID: 569147360}
   - {fileID: 2115145645}
   - {fileID: 840885143}
-  - {fileID: 97046229}
   - {fileID: 2034017402}
+  - {fileID: 97046229}
   - {fileID: 1565663815}
   - {fileID: 281343163}
-  - {fileID: 1084724737}
   - {fileID: 1331948056}
+  - {fileID: 1084724737}
   - {fileID: 1002140046}
   - {fileID: 2093681044}
   - {fileID: 519120630}
+  - {fileID: 1863108923}
+  - {fileID: 984463911}
   - {fileID: 643672740}
   - {fileID: 1246053065}
   - {fileID: 313873470}
   - {fileID: 157070619}
   - {fileID: 163330128}
-  - {fileID: 1863108923}
-  - {fileID: 984463911}
   - {fileID: 541444151}
   - {fileID: 183048762}
   - {fileID: 824531587}

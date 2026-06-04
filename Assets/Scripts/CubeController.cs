@@ -80,17 +80,27 @@ public class CubeController : MonoBehaviour
         MouseY = Input.GetAxis("Mouse Y");
     }
 
-    public void Move()
+public void Move()
+{
+    // Jalur maju/mundur
+    Vector3 targetVelocity = myTransform.forward * InputVertical * _moveSpeed;
+    
+    // Bawaan kodingan lu:
+    // targetVelocity.y = myRigidbody.linearVelocity.y;
+    
+    // REKOMENDASI FIX: Kalau mobil mendadak meloncat ke atas (Y > 0) padahal gak ada gundukan, 
+    // paksa potong kecepatan ke atasnya biar tetep nempel di lantai, tapi biarkan kalau lagi jatuh bebas (Y < 0).
+    if (myRigidbody.linearVelocity.y > 0.1f) 
     {
-        // Mobil hanya bergerak maju atau mundur searah dengan body-nya sendiri (myTransform.forward)
-        Vector3 targetVelocity = myTransform.forward * InputVertical * _moveSpeed;
-        
-        // Tetap pertahankan efek gravitasi (kecepatan Y jatuh) yang sedang berjalan
-        targetVelocity.y = myRigidbody.linearVelocity.y;
-        
-        // Terapkan ke Rigidbody
-        myRigidbody.linearVelocity = targetVelocity;
+        targetVelocity.y = 0f; // menahan efek manjat dinding
     }
+    else 
+    {
+        targetVelocity.y = myRigidbody.linearVelocity.y; // biarkan gravitasi jatuh normal
+    }
+    
+    myRigidbody.linearVelocity = targetVelocity;
+}
 
     public void Turn()
     {
