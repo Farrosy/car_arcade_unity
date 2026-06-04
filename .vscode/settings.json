@@ -66,5 +66,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "car_arcade_unity.slnx"
+    "dotnet.defaultSolution": "RecapProject.slnx"
 }
