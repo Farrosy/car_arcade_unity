@@ -103,4 +103,9 @@ public class NewMonoBehaviourScript : MonoBehaviour
      {
         // Debug.Log("OnDestroy");
      }
+     public void AddPoint(int amount)
+    {
+        TotalPoints += amount;
+        Debug.Log("Poin Bertambah! Total Poin Sekarang: " + TotalPoints);
+    }
 }
