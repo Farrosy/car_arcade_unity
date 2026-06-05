@@ -124,7 +124,12 @@ public class CubeController : MonoBehaviour
 
     public void Scale()
     {
-        myTransform.localScale += (Vector3.one * _scale);
+        if (_scale <= 0f)
+        {
+            _scale = 1f;
+        }
+    
+        myTransform.localScale = Vector3.one * _scale;
     }
 
     public void AddPoint(int amount)
