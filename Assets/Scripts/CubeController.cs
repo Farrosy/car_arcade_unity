@@ -51,7 +51,7 @@ public class CubeController : MonoBehaviour
 
     void Start()
     {
-        Scale();
+        // Scale();
     }
 
     void Update()

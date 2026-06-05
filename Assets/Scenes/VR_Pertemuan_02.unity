@@ -752,57 +752,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 91.21}
---- !u!1 &178229150
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 178229152}
-  - component: {fileID: 178229151}
-  m_Layer: 0
-  m_Name: RaceTimerManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &178229151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 178229150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ef18ca0ef8bc6844b33d9a8593fccc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RaceTimer
-  timerText: {fileID: 1061343245}
-  bestTimeText: {fileID: 0}
-  finishTimeText: {fileID: 696831598}
-  bestCoinText: {fileID: 1117526063}
-  playerScript: {fileID: 687088698}
-  bestTimeKey: BestRaceTime
-  bestCoinKey: BestCoinRecord
---- !u!4 &178229152
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 178229150}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.11459923, y: -0.63978004, z: -5.144539}
-  m_LocalScale: {x: 2.2165744, y: 0.28235635, z: 0.7552589}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1323517160}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &183048760
 GameObject:
   m_ObjectHideFlags: 0
@@ -2454,7 +2403,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.2964234, y: -0, z: -0, w: 0.9550567}
   m_LocalPosition: {x: -0.036798477, y: 0.22292042, z: -0.98454285}
-  m_LocalScale: {x: 1.3832872, y: 0.50258064, z: -0.11409233}
+  m_LocalScale: {x: 1.3832872, y: 0.50258064, z: 0.1140923}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1323517160}
@@ -4274,7 +4223,6 @@ GameObject:
   - component: {fileID: 1323517158}
   - component: {fileID: 1323517157}
   - component: {fileID: 1323517156}
-  - component: {fileID: 1323517161}
   m_Layer: 0
   m_Name: Mobil
   m_TagString: Player
@@ -4394,28 +4342,8 @@ Transform:
   - {fileID: 678021811}
   - {fileID: 1553266896}
   - {fileID: 142897505}
-  - {fileID: 178229152}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1323517161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323517155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ef18ca0ef8bc6844b33d9a8593fccc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RaceTimer
-  timerText: {fileID: 1061343245}
-  bestTimeText: {fileID: 1482611385}
-  finishTimeText: {fileID: 696831598}
-  bestCoinText: {fileID: 1117526063}
-  playerScript: {fileID: 1323517158}
-  bestTimeKey: BestRaceTime
-  bestCoinKey: BestCoinRecord
 --- !u!1 &1331948052
 GameObject:
   m_ObjectHideFlags: 0
@@ -4690,8 +4618,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 636.99744, y: 453.00006}
-  m_SizeDelta: {x: 621.8342, y: 54}
+  m_AnchoredPosition: {x: 597.996, y: 453.00006}
+  m_SizeDelta: {x: 699.8372, y: 54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1482611384
 CanvasRenderer:
@@ -6119,7 +6047,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0.036798477, y: 0.44252014, z: -2.3945389}
-  m_LocalScale: {x: 1.3832872, y: 2.403066, z: -0.056871332}
+  m_LocalScale: {x: 1.3832872, y: 2.403066, z: 0.05687133}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1323517160}
@@ -6668,6 +6596,57 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &2127806164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2127806166}
+  - component: {fileID: 2127806165}
+  m_Layer: 0
+  m_Name: RaceTimer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2127806165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127806164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef18ca0ef8bc6844b33d9a8593fccc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RaceTimer
+  timerText: {fileID: 1061343245}
+  bestTimeText: {fileID: 1482611385}
+  finishTimeText: {fileID: 696831598}
+  bestCoinText: {fileID: 1117526063}
+  playerScript: {fileID: 1323517158}
+  bestTimeKey: BestRaceTime
+  bestCoinKey: BestCoinRecord
+--- !u!4 &2127806166
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127806164}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.38474, y: 3.57969, z: 4.69154}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -6699,3 +6678,4 @@ SceneRoots:
   - {fileID: 541444151}
   - {fileID: 183048762}
   - {fileID: 824531587}
+  - {fileID: 2127806166}
