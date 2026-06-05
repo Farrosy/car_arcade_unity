@@ -1,10 +1,11 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+
 public class CollisionFinish : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI notifText;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         if (notifText != null)
@@ -17,9 +18,24 @@ public class CollisionFinish : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Finish"))
         {
+            // Hentikan timer & simpan rekor
+            if (RaceTimer.Instance != null)
+            {
+                RaceTimer.Instance.StopTimer();
+            }
+
             if (notifText != null)
             {
-                StartCoroutine(TimerText("ENTER! FINISH"));
+                string finishMsg = "FINISH!";
+
+                // Tambahkan waktu finish ke notifikasi
+                if (RaceTimer.Instance != null)
+                {
+                    string timeStr = RaceTimer.FormatTime(RaceTimer.Instance.ElapsedTime);
+                    finishMsg = $"FINISH!\nWaktu: {timeStr}";
+                }
+
+                StartCoroutine(TimerText(finishMsg));
             }
         }
     }
@@ -32,21 +48,4 @@ public class CollisionFinish : MonoBehaviour
 
         notifText.text = "";
     }
-
-    // void OnTriggerStay(Collider other)
-    // {
-    //     if (other.gameObject.tag == "Finish")
-    //     {
-    //         print("STAY");
-    //     }
-        
-    // }
-
-    // void OnTriggerExit(Collider other)
-    // {
-    //     if (other.gameObject.tag == "Finish")
-    //     {
-    //         print("EXIT");
-    //     }
-    // }
 }
