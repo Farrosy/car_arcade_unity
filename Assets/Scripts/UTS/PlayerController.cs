@@ -4,9 +4,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Interaction Settings")]
-    [Header("Movement Settings")]
     public float interactionDistance = 3f; // Jarak maksimal bisa ngeklik tombol
-    public LayerMask interactionLayer;     // Layer khusus untuk tombol pintu
+    public LayerMask interactionLayer;     // Layer khusus untuk tombol/pintu/keycard
+
+    [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public float gravity = -9.81f;
 
@@ -29,12 +30,11 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
     }
 
-    // Tambahkan pemanggilan fungsi di dalam Update()
     void Update()
     {
         HandleLook();
         HandleMovement();
-        HandleInteraction(); // <-- Tambahkan ini
+        HandleInteraction();
     }
 
     void HandleInteraction()
@@ -44,11 +44,35 @@ public class PlayerController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, interactionDistance, interactionLayer))
             {
-                // Mencari komponen tombol 3D Cube baru
+                // 1. Cek KeycardPickup — ambil keycard
+                KeycardPickup keycard = hit.collider.GetComponent<KeycardPickup>();
+                if (keycard != null)
+                {
+                    keycard.Pickup();
+                    return;
+                }
+
+                // 2. Cek tombol 3D Cube
                 SimpleButton3D button3D = hit.collider.GetComponent<SimpleButton3D>();
                 if (button3D != null)
                 {
                     button3D.PressButton();
+                    return;
+                }
+
+                // 3. Cek tombol World Space
+                SimpleButtonWorldSpace worldButton = hit.collider.GetComponent<SimpleButtonWorldSpace>();
+                if (worldButton != null)
+                {
+                    worldButton.PressButton();
+                    return;
+                }
+
+                // 4. Cek klik langsung ke pintu
+                SimpleDoorController door = hit.collider.GetComponentInParent<SimpleDoorController>();
+                if (door != null)
+                {
+                    door.ToggleDoor();
                 }
             }
         }
@@ -88,5 +112,4 @@ public class PlayerController : MonoBehaviour
         // 3. Putar Badan Karakter ke kiri/kanan (Rotasi sumbu Y)
         transform.Rotate(Vector3.up * mouseX);
     }
-    
 }
