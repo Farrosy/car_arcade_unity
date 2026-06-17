@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections; // Ditambahkan untuk mendukung Coroutine
 
 public class DoorFeedbackUI : MonoBehaviour
 {
@@ -31,13 +32,14 @@ public class DoorFeedbackUI : MonoBehaviour
     private bool isDoorBOpened = false; 
     private bool hasKeycard = false;    
 
+    // Coroutine helper untuk mencatat reset status agar tidak tumpang tindih
+    private Coroutine resetStatusBCoroutine;
+    private Coroutine resetStatusCCoroutine;
+
     private void Start()
     {
-        // FIX PADA START: Semua papan status di awal game di-set kosong ("") atau Terminal Ready bawaan standar
         UpdateIndividualStatus(statusTextA, "Terminal Ready", normalColor);
         UpdateIndividualStatus(statusTextB, "Terminal Ready", normalColor);
-        
-        // Sesuai Request: Pintu C kosong dulu di awal game, tidak langsung memunculkan System Offline
         UpdateIndividualStatus(statusTextC, "", normalColor);
         
         if (popupCanvasGroup != null)
@@ -46,7 +48,6 @@ public class DoorFeedbackUI : MonoBehaviour
             popupCanvasGroup.alpha = 0f;
         }
 
-        // Daftarkan fungsi klik ke semua tombol fisik
         if (targetButtonA != null) targetButtonA.OnButtonClicked += HandleButtonAClicked;
         if (targetButtonB != null) targetButtonB.OnButtonClicked += HandleButtonBClicked;
         if (targetButtonC != null) targetButtonC.OnButtonClicked += HandleButtonCClicked;
@@ -67,15 +68,9 @@ public class DoorFeedbackUI : MonoBehaviour
         if (!hasKeycard)
         {
             hasKeycard = true; 
-            
-            // Sesuai Request: Di tengah layar overlay ganti menjadi "ACCESS GRANTED" atau "KEYCARD ACQUIRED" yang sifatnya umum, 
-            // di sini kita beri "ACCESS GRANTED" agar seragam dengan fungsi akses sukses.
             TriggerPopup("ACCESS GRANTED", true);
-
-            // Set sistem global KeycardManager bawaan UTS
             KeycardManager.SetGlobalKeycard(true);
 
-            // Hilangkan visual objek Keycard dari map
             if (targetButtonKeycard != null)
             {
                 foreach (Renderer r in targetButtonKeycard.GetComponentsInChildren<Renderer>()) r.enabled = false;
@@ -106,21 +101,17 @@ public class DoorFeedbackUI : MonoBehaviour
     {
         if (hasKeycard)
         {
+            // Jika sukses membuka, hentikan auto-reset yang sedang berjalan (jika ada)
+            if (resetStatusBCoroutine != null) StopCoroutine(resetStatusBCoroutine);
+
             if (!isDoorBOpened)
             {
                 isDoorBOpened = true;
-                // Status akses melayang berubah sesuai request kamu
                 UpdateIndividualStatus(statusTextB, "Keycard Acquired", successColor);
-                
-                // FIX OVERLAY: Di layar tengah hanya memunculkan "ACCESS GRANTED" murni
                 TriggerPopup("ACCESS GRANTED", true);
 
-                // Jalankan fungsi buka fisik pintu milik temanmu
                 SimpleDoorController doorBController = targetButtonB.GetComponentInParent<SimpleDoorController>();
-                if (doorBController != null)
-                {
-                    doorBController.ToggleDoor();
-                }
+                if (doorBController != null) doorBController.ToggleDoor();
             }
             else
             {
@@ -128,30 +119,29 @@ public class DoorFeedbackUI : MonoBehaviour
                 UpdateIndividualStatus(statusTextB, "Terminal Ready", normalColor);
                 
                 SimpleDoorController doorBController = targetButtonB.GetComponentInParent<SimpleDoorController>();
-                if (doorBController != null && doorBController.IsOpen)
-                {
-                    doorBController.ToggleDoor();
-                }
+                if (doorBController != null && doorBController.IsOpen) doorBController.ToggleDoor();
             }
         }
         else
         {
-            // Status akses melayang berubah jadi "Need Keycard"
             UpdateIndividualStatus(statusTextB, "Need Keycard", warningColor);
-            
-            // FIX OVERLAY: Di layar tengah murni memunculkan teks dasar "ACCESS DENIED" saja
             TriggerPopup("ACCESS DENIED", false);
+
+            // FIX: Jalankan Coroutine untuk mengembalikan status ke "Terminal Ready" setelah beberapa detik
+            if (resetStatusBCoroutine != null) StopCoroutine(resetStatusBCoroutine);
+            resetStatusBCoroutine = StartCoroutine(ResetStatusAfterDelay(statusTextB, "Terminal Ready", normalColor, displayDuration + fadeDuration));
         }
     }
 
     // === 4. LOGIKA PINTU C (Selalu Offline) ===
     private void HandleButtonCClicked()
     {
-        // Sesuai Request: Ketika diklik baru tulisan "System Offline" muncul di papan melayang pintu C
         UpdateIndividualStatus(statusTextC, "System Offline", warningColor);
-        
-        // FIX OVERLAY: Di layar tengah murni memunculkan teks dasar "ACCESS DENIED" saja
         TriggerPopup("ACCESS DENIED", false);
+
+        // FIX BISA DIAPLIKASIKAN DI PINTU C JUGA: Mengembalikan teks pintu C menjadi kosong kembali setelah beberapa saat
+        if (resetStatusCCoroutine != null) StopCoroutine(resetStatusCCoroutine);
+        resetStatusCCoroutine = StartCoroutine(ResetStatusAfterDelay(statusTextC, "", normalColor, displayDuration + fadeDuration));
     }
 
     // === FUNGSI RE-USEABLE UNTUK MENGUBAH TEKS TERTENTU ===
@@ -165,18 +155,27 @@ public class DoorFeedbackUI : MonoBehaviour
         }
     }
 
+    // === COROUTINE BARU: RESET TEKS SETELAH BEBERAPA DETIK ===
+    private IEnumerator ResetStatusAfterDelay(TextMeshProUGUI targetText, string defaultMessage, Color defaultColor, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        UpdateIndividualStatus(targetText, defaultMessage, defaultColor);
+    }
+
     // === FUNGSI POPUP OVERLAY SCREEN ===
     public void TriggerPopup(string message, bool isSuccess)
     {
         if (popupCanvasGroup == null || popupText == null) return;
 
+        // Catatan: StopAllCoroutines() di sini hanya menghentikan coroutine popup (FadePopupRoutine) 
+        // karena dipanggil tepat sebelum StartCoroutine bawaannya sendiri.
         StopAllCoroutines(); 
         popupText.text = message;
         popupText.color = isSuccess ? successColor : warningColor;
         StartCoroutine(FadePopupRoutine());
     }
 
-    private System.Collections.IEnumerator FadePopupRoutine()
+    private IEnumerator FadePopupRoutine()
     {
         popupCanvasGroup.gameObject.SetActive(true);
         float counter = 0f;
