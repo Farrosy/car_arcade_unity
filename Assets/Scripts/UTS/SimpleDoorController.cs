@@ -95,10 +95,10 @@ public class SimpleDoorController : MonoBehaviour
         doorMesh.localPosition = Vector3.Lerp(doorMesh.localPosition, targetPosition, Time.deltaTime * speed);
 
         // Door C: Paksa statusText selalu tampilkan "System Offline" setiap frame
-        if (alwaysLocked && statusText != null)
-        {
-            statusText.text = lockedMessage;
-        }
+        // if (alwaysLocked && statusText != null)
+        // {
+        //     statusText.text = lockedMessage;
+        // }
 
         UpdateButtonColor();
     }
