@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections; // Ditambahkan untuk mendukung Coroutine
+using System.Collections;
 
 public class DoorFeedbackUI : MonoBehaviour
 {
@@ -27,14 +27,19 @@ public class DoorFeedbackUI : MonoBehaviour
     [SerializeField] private SimpleButton3D targetButtonC;
     [SerializeField] private SimpleButton3D targetButtonKeycard;
 
+    [Header("Flexible Destroy Settings")]
+    [Tooltip("Masukkan daftar objek (misal: Keycard_DoorC, barrier, dll) yang ingin ikut terhapus saat keycard diambil")]
+    [SerializeField] private GameObject[] objectsToDestroy;
+
     // === VARIABEL PENANDA STATUS GAME ===
+    private bool hasKeycard = false;    
     private bool isDoorAOpened = false; 
     private bool isDoorBOpened = false; 
-    private bool hasKeycard = false;    
 
     // Coroutine helper untuk mencatat reset status agar tidak tumpang tindih
     private Coroutine resetStatusBCoroutine;
     private Coroutine resetStatusCCoroutine;
+    private Coroutine popupCoroutine;
 
     private void Start()
     {
@@ -48,6 +53,7 @@ public class DoorFeedbackUI : MonoBehaviour
             popupCanvasGroup.alpha = 0f;
         }
 
+        // Subskripsi Event Tombol
         if (targetButtonA != null) targetButtonA.OnButtonClicked += HandleButtonAClicked;
         if (targetButtonB != null) targetButtonB.OnButtonClicked += HandleButtonBClicked;
         if (targetButtonC != null) targetButtonC.OnButtonClicked += HandleButtonCClicked;
@@ -56,13 +62,14 @@ public class DoorFeedbackUI : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Unsubskripsi Event untuk menghindari Memory Leak
         if (targetButtonA != null) targetButtonA.OnButtonClicked -= HandleButtonAClicked;
         if (targetButtonB != null) targetButtonB.OnButtonClicked -= HandleButtonBClicked;
         if (targetButtonC != null) targetButtonC.OnButtonClicked -= HandleButtonCClicked;
         if (targetButtonKeycard != null) targetButtonKeycard.OnButtonClicked -= HandleButtonKeycardClicked;
     }
 
-    // === 1. LOGIKA TOMBOL AMBIL KEYCARD ===
+    // === 1. LOGIKA TOMBOL AMBIL KEYCARD (TRIGGER UTAMA) ===
     private void HandleButtonKeycardClicked()
     {
         if (!hasKeycard)
@@ -71,6 +78,19 @@ public class DoorFeedbackUI : MonoBehaviour
             TriggerPopup("ACCESS GRANTED", true);
             KeycardManager.SetGlobalKeycard(true);
 
+            // Menghapus daftar objek eksternal yang didaftarkan di Inspector (misal: Keycard_DoorC)
+            if (objectsToDestroy != null && objectsToDestroy.Length > 0)
+            {
+                foreach (GameObject obj in objectsToDestroy)
+                {
+                    if (obj != null)
+                    {
+                        Destroy(obj);
+                    }
+                }
+            }
+
+            // Menghancurkan visual tombol keycard itu sendiri secara aman
             if (targetButtonKeycard != null)
             {
                 foreach (Renderer r in targetButtonKeycard.GetComponentsInChildren<Renderer>()) r.enabled = false;
@@ -101,7 +121,6 @@ public class DoorFeedbackUI : MonoBehaviour
     {
         if (hasKeycard)
         {
-            // Jika sukses membuka, hentikan auto-reset yang sedang berjalan (jika ada)
             if (resetStatusBCoroutine != null) StopCoroutine(resetStatusBCoroutine);
 
             if (!isDoorBOpened)
@@ -127,7 +146,6 @@ public class DoorFeedbackUI : MonoBehaviour
             UpdateIndividualStatus(statusTextB, "Need Keycard", warningColor);
             TriggerPopup("ACCESS DENIED", false);
 
-            // FIX: Jalankan Coroutine untuk mengembalikan status ke "Terminal Ready" setelah beberapa detik
             if (resetStatusBCoroutine != null) StopCoroutine(resetStatusBCoroutine);
             resetStatusBCoroutine = StartCoroutine(ResetStatusAfterDelay(statusTextB, "Terminal Ready", normalColor, displayDuration + fadeDuration));
         }
@@ -139,13 +157,11 @@ public class DoorFeedbackUI : MonoBehaviour
         UpdateIndividualStatus(statusTextC, "System Offline", warningColor);
         TriggerPopup("ACCESS DENIED", false);
         
-
-        // FIX BISA DIAPLIKASIKAN DI PINTU C JUGA: Mengembalikan teks pintu C menjadi kosong kembali setelah beberapa saat
         if (resetStatusCCoroutine != null) StopCoroutine(resetStatusCCoroutine);
         resetStatusCCoroutine = StartCoroutine(ResetStatusAfterDelay(statusTextC, "Terminal Error", warningColor, displayDuration + fadeDuration));
     }
 
-    // === FUNGSI RE-USEABLE UNTUK MENGUBAH TEKS TERTENTU ===
+    // === FUNGSI RE-USEABLE UNTUK MENGUBAH TEKS ===
     private void UpdateIndividualStatus(TextMeshProUGUI targetText, string message, Color textColor)
     {
         if (targetText != null)
@@ -156,14 +172,13 @@ public class DoorFeedbackUI : MonoBehaviour
         }
     }
 
-    // === COROUTINE BARU: RESET TEKS SETELAH BEBERAPA DETIK ===
+    // === COROUTINE: RESET TEKS SETELAH JEDA WAKTU ===
     private IEnumerator ResetStatusAfterDelay(TextMeshProUGUI targetText, string defaultMessage, Color defaultColor, float delay)
     {
         yield return new WaitForSeconds(delay);
         UpdateIndividualStatus(targetText, defaultMessage, defaultColor);
     }
 
-    private Coroutine popupCoroutine;
     // === FUNGSI POPUP OVERLAY SCREEN ===
     public void TriggerPopup(string message, bool isSuccess)
     {
@@ -173,25 +188,25 @@ public class DoorFeedbackUI : MonoBehaviour
         popupText.text = message;
         popupText.color = isSuccess ? successColor : warningColor;
         popupCoroutine = StartCoroutine(FadePopupRoutine());
-        // Catatan: StopAllCoroutines() di sini hanya menghentikan coroutine popup (FadePopupRoutine) 
-        // karena dipanggil tepat sebelum StartCoroutine bawaannya sendiri.
-        // StopAllCoroutines(); 
-        // popupText.text = message;
-        // popupText.color = isSuccess ? successColor : warningColor;
-        // StartCoroutine(FadePopupRoutine());
     }
 
     private IEnumerator FadePopupRoutine()
     {
         popupCanvasGroup.gameObject.SetActive(true);
         float counter = 0f;
+        
+        // Fade In
         while (counter < fadeDuration)
         {
             counter += Time.deltaTime;
             popupCanvasGroup.alpha = Mathf.Lerp(0f, 1f, counter / fadeDuration);
             yield return null;
         }
+        
+        // Hold Display
         yield return new WaitForSeconds(displayDuration);
+        
+        // Fade Out
         counter = 0f;
         while (counter < fadeDuration)
         {
@@ -199,6 +214,7 @@ public class DoorFeedbackUI : MonoBehaviour
             popupCanvasGroup.alpha = Mathf.Lerp(1f, 0f, counter / fadeDuration);
             yield return null;
         }
+        
         popupCanvasGroup.gameObject.SetActive(false);
     }
 }

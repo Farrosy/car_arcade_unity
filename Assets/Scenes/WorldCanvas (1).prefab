@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4181686302340042854}
   - component: {fileID: 8868605625438835529}
   - component: {fileID: 7857840680956088016}
-  - component: {fileID: 2097130933324153800}
   - component: {fileID: 36694722983294377}
   m_Layer: 8
   m_Name: ButtonB
@@ -121,21 +120,6 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 8868605625438835529}
   m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &2097130933324153800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2873676315760129347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e966e947cbd2452d58db70c8dc54634b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SimpleButtonWorldSpace
-  onButtonPress:
     m_PersistentCalls:
       m_Calls: []
 --- !u!65 &36694722983294377
