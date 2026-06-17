@@ -6,16 +6,25 @@ using System.Collections;
 
 public class SimpleButtonWorldSpace : MonoBehaviour
 {
+    [Header("Pengaturan Warna")]
+    public Color warnaDefault = Color.gray;
+    public float durasiFeedback = 1f;
+
     [Header("Apa yang terjadi saat ditekan?")]
     public UnityEvent onButtonPress;
     public event Action OnButtonClicked;
+
     private Image ButtonImage;
-    private Color CurrentStatusColor = Color.white;
     private bool isAnimating = false;
 
     void Awake()
     {
         ButtonImage = GetComponent<Image>();
+
+        if (ButtonImage != null)
+        {
+            ButtonImage.color = warnaDefault;
+        }
     }
 
     public void PressButton()
@@ -23,28 +32,22 @@ public class SimpleButtonWorldSpace : MonoBehaviour
         Debug.Log("Tombol World Space Ditekan!");
         onButtonPress?.Invoke();
         OnButtonClicked?.Invoke();
-
-        if (!isAnimating)
-        {
-            StartCoroutine(PressFeedbackAnimation());
-        }
     }
 
-    public void SetButtonColor(Color NewColor)
+    public void TampilkanFeedbackWarna(Color warnaHasil)
     {
-        if (ButtonImage != null && !isAnimating)
+        if (ButtonImage != null && !isAnimating && gameObject.activeInHierarchy)
         {
-            CurrentStatusColor = NewColor;
-            ButtonImage.color = CurrentStatusColor;
+            StartCoroutine(AnimasiFeedback(warnaHasil));
         }
     }
 
-    private IEnumerator PressFeedbackAnimation()
+    private IEnumerator AnimasiFeedback(Color warnaHasil)
     {
         isAnimating = true;
-        ButtonImage.color = CurrentStatusColor * 0.5f;
-        yield return new WaitForSeconds(0.15f);
-        ButtonImage.color = CurrentStatusColor;
+        ButtonImage.color = warnaHasil;
+        yield return new WaitForSeconds(durasiFeedback);
+        ButtonImage.color = warnaDefault;
         isAnimating = false;
     }
 }
