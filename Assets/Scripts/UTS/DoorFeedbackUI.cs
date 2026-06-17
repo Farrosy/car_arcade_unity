@@ -40,7 +40,7 @@ public class DoorFeedbackUI : MonoBehaviour
     {
         UpdateIndividualStatus(statusTextA, "Terminal Ready", normalColor);
         UpdateIndividualStatus(statusTextB, "Terminal Ready", normalColor);
-        UpdateIndividualStatus(statusTextC, "System Offline", warningColor);
+        UpdateIndividualStatus(statusTextC, "Terminal Error", warningColor);
         
         if (popupCanvasGroup != null)
         {
@@ -139,6 +139,10 @@ public class DoorFeedbackUI : MonoBehaviour
         UpdateIndividualStatus(statusTextC, "System Offline", warningColor);
         TriggerPopup("ACCESS DENIED", false);
         
+
+        // FIX BISA DIAPLIKASIKAN DI PINTU C JUGA: Mengembalikan teks pintu C menjadi kosong kembali setelah beberapa saat
+        if (resetStatusCCoroutine != null) StopCoroutine(resetStatusCCoroutine);
+        resetStatusCCoroutine = StartCoroutine(ResetStatusAfterDelay(statusTextC, "Terminal Error", warningColor, displayDuration + fadeDuration));
     }
 
     // === FUNGSI RE-USEABLE UNTUK MENGUBAH TEKS TERTENTU ===
@@ -159,17 +163,22 @@ public class DoorFeedbackUI : MonoBehaviour
         UpdateIndividualStatus(targetText, defaultMessage, defaultColor);
     }
 
+    private Coroutine popupCoroutine;
     // === FUNGSI POPUP OVERLAY SCREEN ===
     public void TriggerPopup(string message, bool isSuccess)
     {
         if (popupCanvasGroup == null || popupText == null) return;
-
-        // Catatan: StopAllCoroutines() di sini hanya menghentikan coroutine popup (FadePopupRoutine) 
-        // karena dipanggil tepat sebelum StartCoroutine bawaannya sendiri.
-        StopAllCoroutines(); 
+        if (popupCoroutine != null) StopCoroutine(popupCoroutine); 
+        
         popupText.text = message;
         popupText.color = isSuccess ? successColor : warningColor;
-        StartCoroutine(FadePopupRoutine());
+        popupCoroutine = StartCoroutine(FadePopupRoutine());
+        // Catatan: StopAllCoroutines() di sini hanya menghentikan coroutine popup (FadePopupRoutine) 
+        // karena dipanggil tepat sebelum StartCoroutine bawaannya sendiri.
+        // StopAllCoroutines(); 
+        // popupText.text = message;
+        // popupText.color = isSuccess ? successColor : warningColor;
+        // StartCoroutine(FadePopupRoutine());
     }
 
     private IEnumerator FadePopupRoutine()
