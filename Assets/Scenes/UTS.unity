@@ -3135,8 +3135,8 @@ MonoBehaviour:
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   warningColor: {r: 1, g: 0, b: 0, a: 1}
   successColor: {r: 0, g: 1, b: 0, a: 1}
-  popupCanvasGroup: {fileID: 0}
-  popupText: {fileID: 0}
+  popupCanvasGroup: {fileID: 1940859172}
+  popupText: {fileID: 1481777724}
   fadeDuration: 0.5
   displayDuration: 1.5
   targetButtonA: {fileID: 2099009148}

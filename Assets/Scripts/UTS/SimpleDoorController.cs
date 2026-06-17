@@ -98,9 +98,7 @@ public class SimpleDoorController : MonoBehaviour
         // if (alwaysLocked && statusText != null)
         // {
         //     statusText.text = lockedMessage;
-        // }
-
-        UpdateButtonColor();
+        // }        
     }
 
     // ─── TRIGGER ZONE: Player/Car masuk ke collider pintu ─────────────────────
@@ -151,6 +149,8 @@ public class SimpleDoorController : MonoBehaviour
             // Door C: Selalu tampilkan System Offline, tidak pernah bisa dibuka
             ShowStatus(lockedMessage, persistent: true);
             Debug.Log($"[Door] [{gameObject.name}] ALWAYS LOCKED: {lockedMessage}");
+
+            if (targetWorldButton != null) targetWorldButton.TampilkanFeedbackWarna(Color.red);
             return;
         }
 
@@ -159,6 +159,8 @@ public class SimpleDoorController : MonoBehaviour
             // Door B: Butuh keycard dulu
             ShowStatus(keycardRequiredMessage, persistent: false);
             Debug.Log($"[Door] [{gameObject.name}] Butuh keycard — akses ditolak.");
+
+            if (targetWorldButton != null) targetWorldButton.TampilkanFeedbackWarna(Color.red);
             return;
         }
 
@@ -166,6 +168,8 @@ public class SimpleDoorController : MonoBehaviour
         isOpen = !isOpen;
         ShowStatus(isOpen ? "Access Granted" : "Door Closed", persistent: false);
         Debug.Log($"[Door] [{gameObject.name}] IsOpen = {isOpen}");
+
+        if (targetWorldButton != null) targetWorldButton.TampilkanFeedbackWarna(Color.green);
     }
 
     private bool HasKeycard()
@@ -210,27 +214,6 @@ public class SimpleDoorController : MonoBehaviour
         if (!alwaysLocked && statusText != null)
         {
             statusText.text = "";
-        }
-    }
-
-    private void UpdateButtonColor()
-    {
-        if (targetWorldButton != null)
-        {
-            if (alwaysLocked)
-            {
-                targetWorldButton.SetButtonColor(Color.red);
-            }
-
-            else if (requiresKeycard && !HasKeycard())
-            {
-                targetWorldButton.SetButtonColor(Color.red);
-            }
-
-            else
-            {
-                targetWorldButton.SetButtonColor(Color.green);
-            }
         }
     }
 }
