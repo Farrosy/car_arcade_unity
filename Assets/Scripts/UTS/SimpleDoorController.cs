@@ -21,7 +21,7 @@ public class SimpleDoorController : MonoBehaviour
 
     [Header("Door Movement Settings")]
     public Transform doorMesh;
-    public Vector3 openOffset = new Vector3(-1.5f, 0f, 0f);
+    public Vector3 openOffset = new Vector3(-2.5f, 0f, 0f);
     public float speed = 3f;
 
     [Header("Door Access Settings")]
