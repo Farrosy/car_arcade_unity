@@ -40,7 +40,7 @@ public class DoorFeedbackUI : MonoBehaviour
     {
         UpdateIndividualStatus(statusTextA, "Terminal Ready", normalColor);
         UpdateIndividualStatus(statusTextB, "Terminal Ready", normalColor);
-        UpdateIndividualStatus(statusTextC, "", normalColor);
+        UpdateIndividualStatus(statusTextC, "System Offline", warningColor);
         
         if (popupCanvasGroup != null)
         {
@@ -138,10 +138,7 @@ public class DoorFeedbackUI : MonoBehaviour
     {
         UpdateIndividualStatus(statusTextC, "System Offline", warningColor);
         TriggerPopup("ACCESS DENIED", false);
-
-        // FIX BISA DIAPLIKASIKAN DI PINTU C JUGA: Mengembalikan teks pintu C menjadi kosong kembali setelah beberapa saat
-        if (resetStatusCCoroutine != null) StopCoroutine(resetStatusCCoroutine);
-        resetStatusCCoroutine = StartCoroutine(ResetStatusAfterDelay(statusTextC, "", normalColor, displayDuration + fadeDuration));
+        
     }
 
     // === FUNGSI RE-USEABLE UNTUK MENGUBAH TEKS TERTENTU ===
