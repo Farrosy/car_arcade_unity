@@ -99,6 +99,8 @@ public class SimpleDoorController : MonoBehaviour
         {
             statusText.text = lockedMessage;
         }
+
+        UpdateButtonColor();
     }
 
     // ─── TRIGGER ZONE: Player/Car masuk ke collider pintu ─────────────────────
@@ -208,6 +210,27 @@ public class SimpleDoorController : MonoBehaviour
         if (!alwaysLocked && statusText != null)
         {
             statusText.text = "";
+        }
+    }
+
+    private void UpdateButtonColor()
+    {
+        if (targetWorldButton != null)
+        {
+            if (alwaysLocked)
+            {
+                targetWorldButton.SetButtonColor(Color.red);
+            }
+
+            else if (requiresKeycard && !HasKeycard())
+            {
+                targetWorldButton.SetButtonColor(Color.red);
+            }
+
+            else
+            {
+                targetWorldButton.SetButtonColor(Color.green);
+            }
         }
     }
 }
