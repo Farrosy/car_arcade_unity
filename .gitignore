@@ -1,4 +1,4 @@
-cat <<EOT > .gitignore
+# Unity isi folder temporary dan hasil build
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -6,6 +6,30 @@ cat <<EOT > .gitignore
 /[Bb]uilds/
 /[Ll]ogs/
 /[Vv]ersionControl/
+/[Uu]ser[Ss]ettings/
+/[Mm]emory[Cc]aptures/
+/[AsmdefCache]/
+
+# File solusi buatan IDE (Visual Studio / Rider)
 *.csproj
 *.sln
-EOT
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+*.VC.db
+
+# Folder buatan IDE
+.vs/
+.gradle/
+.idea/
+.rider/
+
+# OS junk files
+.DS_Store
+Thumbs.db
