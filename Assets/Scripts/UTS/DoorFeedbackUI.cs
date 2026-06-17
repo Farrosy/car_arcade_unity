@@ -1,33 +1,44 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
 
 public class DoorFeedbackUI : MonoBehaviour
 {
-    [Header("Status Text Settings")]
-    [SerializeField] private TextMeshProUGUI statusText;
+    [Header("Status Text Settings (World Space)")]
+    [SerializeField] private TextMeshProUGUI statusTextA;
+    [SerializeField] private TextMeshProUGUI statusTextB;
+    [SerializeField] private TextMeshProUGUI statusTextC;
+
+    [Header("Color Settings")]
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color warningColor = Color.red;
     [SerializeField] private Color successColor = Color.green;
 
-    [Header("Popup Settings (Bonus Points)")]
+    [Header("Popup Settings (Screen Overlay)")]
     [SerializeField] private CanvasGroup popupCanvasGroup;
     [SerializeField] private TextMeshProUGUI popupText;
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float displayDuration = 1.5f;
 
     [Header("3D Physical Button Settings")]
-    [Tooltip("Tarik objek TombolPintu_A yang ada script SimpleButton3D milik temen lu ke sini")]
     [SerializeField] private SimpleButton3D targetButtonA;
+    [SerializeField] private SimpleButton3D targetButtonB;
+    [SerializeField] private SimpleButton3D targetButtonC;
+    [SerializeField] private SimpleButton3D targetButtonKeycard;
 
-    // === VARIABEL PENANDA STATUS PINTU ===
-    // Secara default, saat game mulai pintu dalam posisi tertutup (false)
+    // === VARIABEL PENANDA STATUS GAME ===
     private bool isDoorAOpened = false; 
+    private bool isDoorBOpened = false; 
+    private bool hasKeycard = false;    
 
     private void Start()
     {
-        UpdateStatus("Terminal Ready. Select a door.", normalColor);
+        // FIX PADA START: Semua papan status di awal game di-set kosong ("") atau Terminal Ready bawaan standar
+        UpdateIndividualStatus(statusTextA, "Terminal Ready", normalColor);
+        UpdateIndividualStatus(statusTextB, "Terminal Ready", normalColor);
+        
+        // Sesuai Request: Pintu C kosong dulu di awal game, tidak langsung memunculkan System Offline
+        UpdateIndividualStatus(statusTextC, "", normalColor);
         
         if (popupCanvasGroup != null)
         {
@@ -35,63 +46,126 @@ public class DoorFeedbackUI : MonoBehaviour
             popupCanvasGroup.alpha = 0f;
         }
 
-        if (targetButtonA != null)
-        {
-            targetButtonA.OnButtonClicked += HandleButtonAClicked;
-        }
+        // Daftarkan fungsi klik ke semua tombol fisik
+        if (targetButtonA != null) targetButtonA.OnButtonClicked += HandleButtonAClicked;
+        if (targetButtonB != null) targetButtonB.OnButtonClicked += HandleButtonBClicked;
+        if (targetButtonC != null) targetButtonC.OnButtonClicked += HandleButtonCClicked;
+        if (targetButtonKeycard != null) targetButtonKeycard.OnButtonClicked += HandleButtonKeycardClicked;
     }
 
     private void OnDestroy()
     {
-        if (targetButtonA != null)
+        if (targetButtonA != null) targetButtonA.OnButtonClicked -= HandleButtonAClicked;
+        if (targetButtonB != null) targetButtonB.OnButtonClicked -= HandleButtonBClicked;
+        if (targetButtonC != null) targetButtonC.OnButtonClicked -= HandleButtonCClicked;
+        if (targetButtonKeycard != null) targetButtonKeycard.OnButtonClicked -= HandleButtonKeycardClicked;
+    }
+
+    // === 1. LOGIKA TOMBOL AMBIL KEYCARD ===
+    private void HandleButtonKeycardClicked()
+    {
+        if (!hasKeycard)
         {
-            targetButtonA.OnButtonClicked -= HandleButtonAClicked;
+            hasKeycard = true; 
+            
+            // Sesuai Request: Di tengah layar overlay ganti menjadi "ACCESS GRANTED" atau "KEYCARD ACQUIRED" yang sifatnya umum, 
+            // di sini kita beri "ACCESS GRANTED" agar seragam dengan fungsi akses sukses.
+            TriggerPopup("ACCESS GRANTED", true);
+
+            // Set sistem global KeycardManager bawaan UTS
+            KeycardManager.SetGlobalKeycard(true);
+
+            // Hilangkan visual objek Keycard dari map
+            if (targetButtonKeycard != null)
+            {
+                foreach (Renderer r in targetButtonKeycard.GetComponentsInChildren<Renderer>()) r.enabled = false;
+                foreach (Collider c in targetButtonKeycard.GetComponentsInChildren<Collider>()) c.enabled = false;
+                Destroy(targetButtonKeycard.gameObject, 0.1f);
+            }
         }
     }
 
-    // Fungsi otomatis yang berjalan kalau tombol temen lu ditekan
+    // === 2. LOGIKA PINTU A ===
     private void HandleButtonAClicked()
     {
-        // JIKA PINTU LAGI TERTUTUP (Kondisi pertama kali klik)
         if (!isDoorAOpened)
         {
-            // 1. Ubah status teks di terminal jadi dibuka
-            ShowDoorAOpened();
-            
-            // 2. Jalankan popup "ACCESS GRANTED" lu
-            TriggerPopup("ACCESS GRANTED", true);
-            
-            // 3. Set status kalau pintu SEKARANG SUDAH TERBUKA
             isDoorAOpened = true;
+            UpdateIndividualStatus(statusTextA, "Door A Opened", successColor);
+            TriggerPopup("ACCESS GRANTED", true);
         }
-        // JIKA PINTU LAGI TERBUKA (Kondisi klik kedua kalinya / menutup)
         else
         {
-            // 1. Ubah status teks di terminal jadi tertutup kembali
-            UpdateStatus("Terminal Ready. Door A Closed.", normalColor);
-            
-            // 2. KOSONGKAN / JANGAN PANGGIL TRIGGER POPUP LU DI SINI
-            // Biar popup-nya ga muncul pas nutup pintu.
-
-            // 3. Set status kalau pintu SEKARANG SUDAH TERTUTUP KEMBALI
             isDoorAOpened = false;
+            UpdateIndividualStatus(statusTextA, "Terminal Ready", normalColor);
         }
     }
 
-    public void UpdateStatus(string message, Color textColor)
+    // === 3. LOGIKA PINTU B (Butuh Keycard) ===
+    private void HandleButtonBClicked()
     {
-        if (statusText != null)
+        if (hasKeycard)
         {
-            statusText.text = message;
-            statusText.color = textColor;
+            if (!isDoorBOpened)
+            {
+                isDoorBOpened = true;
+                // Status akses melayang berubah sesuai request kamu
+                UpdateIndividualStatus(statusTextB, "Keycard Acquired", successColor);
+                
+                // FIX OVERLAY: Di layar tengah hanya memunculkan "ACCESS GRANTED" murni
+                TriggerPopup("ACCESS GRANTED", true);
+
+                // Jalankan fungsi buka fisik pintu milik temanmu
+                SimpleDoorController doorBController = targetButtonB.GetComponentInParent<SimpleDoorController>();
+                if (doorBController != null)
+                {
+                    doorBController.ToggleDoor();
+                }
+            }
+            else
+            {
+                isDoorBOpened = false;
+                UpdateIndividualStatus(statusTextB, "Terminal Ready", normalColor);
+                
+                SimpleDoorController doorBController = targetButtonB.GetComponentInParent<SimpleDoorController>();
+                if (doorBController != null && doorBController.IsOpen)
+                {
+                    doorBController.ToggleDoor();
+                }
+            }
+        }
+        else
+        {
+            // Status akses melayang berubah jadi "Need Keycard"
+            UpdateIndividualStatus(statusTextB, "Need Keycard", warningColor);
+            
+            // FIX OVERLAY: Di layar tengah murni memunculkan teks dasar "ACCESS DENIED" saja
+            TriggerPopup("ACCESS DENIED", false);
         }
     }
 
-    public void ShowDoorAOpened() => UpdateStatus("Door A Opened", successColor);
-    public void ShowNeedKeycard() => UpdateStatus("Need Keycard", warningColor);
-    public void ShowKeycardAcquired() => UpdateStatus("Keycard Acquired", successColor);
-    public void ShowSystemOffline() => UpdateStatus("System Offline", warningColor);
+    // === 4. LOGIKA PINTU C (Selalu Offline) ===
+    private void HandleButtonCClicked()
+    {
+        // Sesuai Request: Ketika diklik baru tulisan "System Offline" muncul di papan melayang pintu C
+        UpdateIndividualStatus(statusTextC, "System Offline", warningColor);
+        
+        // FIX OVERLAY: Di layar tengah murni memunculkan teks dasar "ACCESS DENIED" saja
+        TriggerPopup("ACCESS DENIED", false);
+    }
 
+    // === FUNGSI RE-USEABLE UNTUK MENGUBAH TEKS TERTENTU ===
+    private void UpdateIndividualStatus(TextMeshProUGUI targetText, string message, Color textColor)
+    {
+        if (targetText != null)
+        {
+            targetText.text = message;
+            targetText.color = textColor;
+            targetText.ForceMeshUpdate();
+        }
+    }
+
+    // === FUNGSI POPUP OVERLAY SCREEN ===
     public void TriggerPopup(string message, bool isSuccess)
     {
         if (popupCanvasGroup == null || popupText == null) return;
@@ -99,7 +173,6 @@ public class DoorFeedbackUI : MonoBehaviour
         StopAllCoroutines(); 
         popupText.text = message;
         popupText.color = isSuccess ? successColor : warningColor;
-        
         StartCoroutine(FadePopupRoutine());
     }
 
@@ -113,9 +186,7 @@ public class DoorFeedbackUI : MonoBehaviour
             popupCanvasGroup.alpha = Mathf.Lerp(0f, 1f, counter / fadeDuration);
             yield return null;
         }
-
         yield return new WaitForSeconds(displayDuration);
-
         counter = 0f;
         while (counter < fadeDuration)
         {
