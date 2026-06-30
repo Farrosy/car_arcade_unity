@@ -1,5 +1,3 @@
 ﻿<Solution>
-  <Project Path="EditModeTests.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
-  <Project Path="Assembly-CSharp-Editor.csproj" />
 </Solution>
